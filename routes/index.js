@@ -6,6 +6,12 @@ var mongoDBURI = process.env.MONGODB_URI ||'mongodb://CJV:doritos61@ds231245.mla
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+router.post('/', function(req, res, next) {
+    res.render('index', { title: 'ExpressPost' });
+});
+router.all('/secret', function(req, res, next) {
+    res.render('index', { title: 'Express2' });
+});
 router.get('/mongodb', function (request, response) {
     mongodb.MongoClient.connect(mongoDBURI, function(err, db) {
         if(err) throw err;
