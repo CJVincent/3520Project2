@@ -65,7 +65,8 @@ router.post('/',jsonParser, function(req, res) {
             item.code = requestBody.session_basket[i].code;
             item.quantity = requestBody.session_basket[i].quantity;
             item.price = requestBody.session_basket[i].price;
-            totalCost += parseFloat(item.price);
+            totalCost += parseFloat(item.price * item.quantity);
+            console.log('totalCost so far ' + totalCost);
             item = JSON.stringify(item);
             products.push(item);
         }
