@@ -8,6 +8,7 @@ var jsonParser = bodyParser.json();
 var mongoDBURI = process.env.MONGODB_URI ||'mongodb://CJV:doritos61@ds231245.mlab.com:31245/heroku_dh2zjfbf';
 router.post('/',jsonParser, function(req, res) {
     var requestBody = req.body;
+    console.log(requestBody);
     mongodb.connect(mongoDBURI, function(err, db) {
         if(err) throw err;
 
