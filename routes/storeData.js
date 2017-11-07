@@ -8,12 +8,10 @@ var jsonParser = bodyParser.json();
 var mongoDBURI = process.env.MONGODB_URI ||'mongodb://CJV:doritos61@ds231245.mlab.com:31245/heroku_dh2zjfbf';
 router.post('/',jsonParser, function(req, res) {
     var requestBody = req.body;
-
+    console.log(requestBody);
     mongodb.connect(mongoDBURI, function(err, db) {
-        if(err){
-            console.log(requestBody);
-            throw err;
-        }
+        if(err) throw err;
+
 
         var Routes = db.collection('CUSTOMERS');
         var custID = new ObjectID();
@@ -63,7 +61,8 @@ router.post('/',jsonParser, function(req, res) {
         //only want code, quantity, and price in database
         var products = new Array();
         var totalCost = 0;
-        for (var i =0; i < (requestBody.session_basket).length; i++)
+        var numItems = (req.body.session_basket).length;
+        for (var i =0; i < numItems; i++)
         {
             var item = new Object();
             item.code = requestBody.session_basket[i].code;
