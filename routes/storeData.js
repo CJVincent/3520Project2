@@ -61,8 +61,7 @@ router.post('/',jsonParser, function(req, res) {
         //only want code, quantity, and price in database
         var products = new Array();
         var totalCost = 0;
-        var numItems = (req.body.session_basket).length;
-        for (var i =0; i < numItems; i++)
+        for (var i =0; i < requestBody.numItems; i++)
         {
             var item = new Object();
             item.code = requestBody.session_basket[i].code;
