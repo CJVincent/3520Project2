@@ -78,7 +78,6 @@
             for(var i = 0; i < data.session_basket.length;i++)
             {
                 var item = data.session_basket[i];
-                console.log(item);
                 var subtotal = ((item.price * item.quantity) + (item.price * item.quantity)*0.08).toFixed(2);
                     total += parseFloat(subtotal);
                 %>
