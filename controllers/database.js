@@ -1,15 +1,20 @@
-var express = require('express');
-var router = express.Router();
 var mongodb = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var mongoDBURI = process.env.MONGODB_URI ||'mongodb://CJV:doritos61@ds231245.mlab.com:31245/heroku_dh2zjfbf';
-router.post('/', function(req, res) {
+
+//default page
+module.exports.index = function(req, res, next) {
+    res.render('index', { title: 'Express' });
+};
+module.exports.storeData = function(req, res) {
     var requestBody = req.body;
     //console.log(requestBody);
     mongodb.connect(mongoDBURI, function(err, db) {
         if(err) throw err;
         var dbColl = db.collection('CUSTOMERS');
         var custID = new ObjectID();
+        var billID = new ObjectID();
+        var shipID = new ObjectID();
         var cust = {
             _id: custID,
             FIRSTNAME: requestBody.fnameB,
@@ -23,7 +28,6 @@ router.post('/', function(req, res) {
 
         dbColl.insertOne(cust,processRequest);
         dbColl = db.collection('BILLING');
-        var billID = new ObjectID();
         var bill = {
             _id: billID,
             CUSTOMERID: custID,
@@ -35,7 +39,6 @@ router.post('/', function(req, res) {
         };
         dbColl.insertOne(bill,processRequest);
         dbColl = db.collection('SHIPPING');
-        var shipID = new ObjectID();
         var ship = {
             _id: shipID,
             SHIPPING_STREET: requestBody.address,
@@ -74,12 +77,11 @@ router.post('/', function(req, res) {
 
     });//end of connect
     res.render('storeData', { data: requestBody});
-});
+};
 
 function processRequest(err, res)
 {
     if (err) throw err;
     console.log("1 document inserted");
-    return res;
+    return res.ops;
 }
-module.exports = router;

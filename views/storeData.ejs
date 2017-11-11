@@ -50,8 +50,7 @@
 <div class="bodyDiv">
     <div class = "userInfoDiv">
 
-        <h1 class="userInfoH1">Order Summary</h1>
-        <p>Please review your order to make sure all information is correct. Once you submit your order, you will be returned to the store home page.</p>
+        <h1 class="userInfoH1">Thank you for your submitted Order</h1>
         <div class = "infoColumn" style = "float:left;">
             <p>Shipping Address:<br><%= data.fname %> <%= data.lname %> <br>
                 <%= data.address %> <%= data.address2 %> <br>
@@ -107,7 +106,7 @@
         <div class = "totalCell" style = "float:right;">
             <p>Shipping: $2.00</p>
             <h2>Total: $<%=(total + 2).toFixed(2)%></h2>
-            <form action = "http://csweb01.csueastbay.edu/~qh6268/Project 1/end.php" method ="post"><input type="submit" class = "mainButton" value="Submit Order"></form>
+            <form action = "http://csweb01.csueastbay.edu/~qh6268/Project 1/end.php" method ="post"><input type="submit" class = "mainButton" value="Return to home"></form>
         </div>
     </div>
 </div>
