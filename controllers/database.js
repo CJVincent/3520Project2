@@ -1,7 +1,6 @@
 var mongodb = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var mongoDBURI = process.env.MONGODB_URI ||'mongodb://CJV:doritos61@ds231245.mlab.com:31245/heroku_dh2zjfbf';
-
 //default page
 module.exports.index = function(req, res, next) {
     res.render('index', { title: 'Express' });
@@ -15,6 +14,8 @@ module.exports.storeData = function(req, res) {
         var custID = new ObjectID();
         var billID = new ObjectID();
         var shipID = new ObjectID();
+        var x =req.headers;
+        console.log(x);
         var cust = {
             _id: custID,
             FIRSTNAME: requestBody.fnameB,
@@ -41,6 +42,7 @@ module.exports.storeData = function(req, res) {
         dbColl = db.collection('SHIPPING');
         var ship = {
             _id: shipID,
+            CUSTOMER_ID: custID,
             SHIPPING_STREET: requestBody.address,
             SHIPPING_CITY: requestBody.city,
             SHIPPING_STATE: requestBody.state,
