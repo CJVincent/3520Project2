@@ -35,7 +35,6 @@ module.exports.storeData = function(req, res) {
             CREDITCARDTYPE: requestBody.creditCard,
             CREDITCARDNUM: requestBody.cardNumber,
             CREDITCARDEXP: requestBody.cardExpiration,
-            CREDITCARDDATE: requestBody.cardExpiration,
             CREDITCARDSECURITYNUM: requestBody.cardSecurityNumber
         };
         dbColl.insertOne(bill,processRequest);
@@ -85,5 +84,4 @@ function processRequest(err, res)
 {
     if (err) throw err;
     console.log("1 document inserted");
-    return res.ops;
 }
