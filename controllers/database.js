@@ -10,12 +10,13 @@ module.exports.storeData = function(req, res) {
     //console.log(requestBody);
     mongodb.connect(mongoDBURI, function(err, db) {
         if(err) throw err;
+        //dbColl represents current database collection
         var dbColl = db.collection('CUSTOMERS');
+        // create IDs for new documents
         var custID = new ObjectID();
         var billID = new ObjectID();
         var shipID = new ObjectID();
-        var x =req.headers;
-        console.log(x);
+        //create customer JSON
         var cust = {
             _id: custID,
             FIRSTNAME: requestBody.fnameB,
@@ -26,9 +27,10 @@ module.exports.storeData = function(req, res) {
             ZIP: requestBody.zipB,
             EMAIL: requestBody.emailB
         };
-
+        //Insert document and set collection to billing
         dbColl.insertOne(cust,processRequest);
         dbColl = db.collection('BILLING');
+        //create billing JSON
         var bill = {
             _id: billID,
             CUSTOMERID: custID,
@@ -37,8 +39,10 @@ module.exports.storeData = function(req, res) {
             CREDITCARDEXP: requestBody.cardExpiration,
             CREDITCARDSECURITYNUM: requestBody.cardSecurityNumber
         };
+        //Insert document and set collection to shipping
         dbColl.insertOne(bill,processRequest);
         dbColl = db.collection('SHIPPING');
+        //create shipping JSON
         var ship = {
             _id: shipID,
             CUSTOMER_ID: custID,
@@ -47,21 +51,25 @@ module.exports.storeData = function(req, res) {
             SHIPPING_STATE: requestBody.state,
             SHIPPING_ZIP: requestBody.zip
         };
+        //Insert document and set collection to orders
         dbColl.insertOne(ship,processRequest);
         dbColl = db.collection('ORDERS');
-        //only want code, quantity, and price in database
+        //create product vector
         var products = new Array();
         var totalCost = 0;
         for (var i =0; i < requestBody.session_basket.length; i++)
         {
+            //only want code, quantity, and price in database
             var item = new Object();
             item.code = requestBody.session_basket[i].code;
             item.quantity = requestBody.session_basket[i].quantity;
             item.price = requestBody.session_basket[i].price;
             totalCost += parseFloat(item.price * item.quantity);
+            //add item as JSON
             item = JSON.stringify(item);
             products.push(item);
         }
+        //create order JSON
         var order = {
             CUSTOMER_ID: custID,
             BILLING_ID: billID,
@@ -70,13 +78,15 @@ module.exports.storeData = function(req, res) {
             PRODUCT_VECTOR: products,
             ORDER_TOTAL: ((totalCost +(totalCost*0.08)) +2).toFixed(2)
         };
+        //insert document
         dbColl.insertOne(order,processRequest);
-        //close connection when your app is terminating.
+        //close connection
         db.close(function (err) {
             if(err) throw err;
         });
 
     });//end of connect
+    //render order summary
     res.render('storeData', { data: requestBody});
 };
 
